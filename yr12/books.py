@@ -1,5 +1,5 @@
-students = int(input('Number of students: '))
-books = int(input('Number of books: '))
+students = ['Kid 1', 'kid 2']
+books = ['book 1', 'book 2', 'book 3', 'book 4', 'book 5']
 
 each = books // students
 left = books % students
