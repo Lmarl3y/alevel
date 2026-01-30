@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Big O Notation (Super Dumb Edition)</title>
+
+<style>
+    :root {
+        --bg: #0f1224;
+        --card: #1c1f3a;
+        --accent1: #ff6ec7;
+        --accent2: #6effc7;
+        --accent3: #6ea8ff;
+        --text: #ffffff;
+        --soft: #b8b8ff;
+    }
+
+    * {
+        box-sizing: border-box;
+        font-family: "Comic Sans MS", "Poppins", sans-serif;
+    }
+
+    body {
+        margin: 0;
+        background: radial-gradient(circle at top, #1b1f4a, var(--bg));
+        color: var(--text);
+        min-height: 100vh;
+        overflow-x: hidden;
+    }
+
+    header {
+        text-align: center;
+        padding: 60px 20px;
+        animation: floatIn 1s ease-out;
+    }
+
+    header h1 {
+        font-size: 3rem;
+        margin: 0;
+        background: linear-gradient(90deg, var(--accent1), var(--accent2), var(--accent3));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    header p {
+        color: var(--soft);
+        font-size: 1.2rem;
+    }
+
+    .container {
+        max-width: 1100px;
+        margin: auto;
+        padding: 20px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 25px;
+    }
+
+    .card {
+        background: linear-gradient(145deg, #22265a, var(--card));
+        border-radius: 20px;
+        padding: 25px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        animation: popIn 0.8s ease forwards;
+        transform: scale(0.9);
+        opacity: 0;
+    }
+
+    .card:hover {
+        transform: scale(1.03);
+    }
+
+    .card h2 {
+        margin-top: 0;
+        color: var(--accent2);
+    }
+
+    .example {
+        background: rgba(255,255,255,0.05);
+        padding: 15px;
+        border-radius: 12px;
+        margin: 10px 0;
+        border-left: 5px solid var(--accent1);
+        animation: slideIn 0.8s ease;
+    }
+
+    .tag {
+        display: inline-block;
+        background: var(--accent3);
+        color: #000;
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 0.8rem;
+        margin-bottom: 10px;
+    }
+
+    footer {
+        text-align: center;
+        padding: 40px 10px;
+        color: var(--soft);
+        font-size: 0.9rem;
+    }
+
+    /* Animations */
+    @keyframes popIn {
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    @keyframes slideIn {
+        from {
+            transform: translateX(-20px);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    @keyframes floatIn {
+        from {
+            transform: translateY(-30px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    .sparkle {
+        position: fixed;
+        width: 8px;
+        height: 8px;
+        background: var(--accent1);
+        border-radius: 50%;
+        pointer-events: none;
+        animation: sparkle 1s linear forwards;
+    }
+
+    @keyframes sparkle {
+        from {
+            transform: scale(1);
+            opacity: 1;
+        }
+        to {
+            transform: scale(3);
+            opacity: 0;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>Big O Notation</h1>
+    <p>Explained so simply it hurts</p>
+</header>
+
+<div class="container">
+
+    <!-- NORMAL DUMB -->
+    <div class="card">
+        <span class="tag">Dumbed Down</span>
+        <h2>What is Big O?</h2>
+        <p>
+            Big O is just a way to say:
+            <strong>“How slow does this get when there is more stuff?”</strong>
+        </p>
+
+        <div class="example">
+            <strong>O(1)</strong> – Always fast<br>
+            Grab one thing. Done.
+        </div>
+
+        <div class="example">
+            <strong>O(n)</strong> – Check everything<br>
+            More stuff = more work.
+        </div>
+
+        <div class="example">
+            <strong>O(n²)</strong> – Everything checks everything<br>
+            Pain increases rapidly.
+        </div>
+
+        <div class="example">
+            <strong>O(log n)</strong> – Cut it in half<br>
+            Smart and speedy.
+        </div>
+    </div>
+
+    <!-- ULTRA DUMB -->
+    <div class="card">
+        <span class="tag">Ultra Dumb</span>
+        <h2>Big O (Baby Mode)</h2>
+        <p>
+            Big O means:
+            <strong>“If there is more stuff, do I wait longer?”</strong>
+        </p>
+
+        <div class="example">
+            🍪 <strong>O(1)</strong><br>
+            One grab. Always same time.
+        </div>
+
+        <div class="example">
+            🍪🍪 <strong>O(n)</strong><br>
+            Count all cookies.
+        </div>
+
+        <div class="example">
+            🍪💥🍪 <strong>O(n²)</strong><br>
+            Every cookie meets every cookie.
+        </div>
+
+        <div class="example">
+            ✂️ <strong>O(log n)</strong><br>
+            Throw away half each time.
+        </div>
+    </div>
+
+</div>
+
+<footer>
+    Big O but make it ✨understandable✨
+</footer>
+
+<script>
+    // Sparkle effect on click
+    document.addEventListener("click", e => {
+        const s = document.createElement("div");
+        s.className = "sparkle";
+        s.style.left = e.pageX + "px";
+        s.style.top = e.pageY + "px";
+        document.body.appendChild(s);
+        setTimeout(() => s.remove(), 1000);
+    });
+
+    // Stagger card animations
+    document.querySelectorAll(".card").forEach((card, i) => {
+        card.style.animationDelay = `${i * 0.2}s`;
+    });
+</script>
+
+</body>
+</html>
