@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Graph Traversal Explained Properly</title>
+<title>Graph Traversal Explained</title>
 
 <style>
 body {
@@ -14,7 +14,7 @@ body {
   height: 100vh;
 }
 
-#graphArea {
+#left {
   width: 55%;
   display: flex;
   flex-direction: column;
@@ -22,7 +22,7 @@ body {
   justify-content: center;
 }
 
-#textArea {
+#right {
   width: 45%;
   background: #020617;
   padding: 20px;
@@ -69,9 +69,18 @@ svg {
   stroke-width: 2;
 }
 
-.step {
-  margin-top: 12px;
-  padding: 10px;
+.node-label {
+  fill: #e5e7eb;
+  font-size: 14px;
+  font-weight: bold;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  pointer-events: none;
+}
+
+.box {
+  margin-bottom: 12px;
+  padding: 12px;
   background: #020617;
   border: 1px solid #1e293b;
   border-radius: 6px;
@@ -81,7 +90,8 @@ svg {
 
 <body>
 
-<div id="graphArea">
+<!-- LEFT SIDE: GRAPH -->
+<div id="left">
   <h1>Graph Traversal</h1>
 
   <div>
@@ -90,6 +100,8 @@ svg {
   </div>
 
   <svg width="460" height="300">
+
+    <!-- Edges -->
     <line class="edge" x1="230" y1="40" x2="130" y2="140"/>
     <line class="edge" x1="230" y1="40" x2="330" y2="140"/>
     <line class="edge" x1="130" y1="140" x2="80" y2="240"/>
@@ -97,54 +109,69 @@ svg {
     <line class="edge" x1="330" y1="140" x2="280" y2="240"/>
     <line class="edge" x1="330" y1="140" x2="380" y2="240"/>
 
+    <!-- Nodes -->
     <circle id="A" class="node" cx="230" cy="40" r="20"/>
+    <text x="230" y="40" class="node-label">A</text>
+
     <circle id="B" class="node" cx="130" cy="140" r="20"/>
+    <text x="130" y="140" class="node-label">B</text>
+
     <circle id="C" class="node" cx="330" cy="140" r="20"/>
+    <text x="330" y="140" class="node-label">C</text>
+
     <circle id="D" class="node" cx="80" cy="240" r="20"/>
+    <text x="80" y="240" class="node-label">D</text>
+
     <circle id="E" class="node" cx="180" cy="240" r="20"/>
+    <text x="180" y="240" class="node-label">E</text>
+
     <circle id="F" class="node" cx="280" cy="240" r="20"/>
+    <text x="280" y="240" class="node-label">F</text>
+
     <circle id="G" class="node" cx="380" cy="240" r="20"/>
+    <text x="380" y="240" class="node-label">G</text>
   </svg>
 </div>
 
-<div id="textArea">
-  <h2>Read this first 👇</h2>
+<!-- RIGHT SIDE: EXPLANATION -->
+<div id="right">
+  <h2>Explanation (Read Me)</h2>
 
-  <div class="step">
+  <div class="box">
     <b>What is a graph?</b><br><br>
-    A graph is made of <b>points</b> (called nodes) and <b>lines</b> (called edges).<br><br>
-    You can imagine nodes as houses and edges as roads connecting them.
+    A graph is made of <b>nodes</b> (the circles) and <b>edges</b> (the lines).<br><br>
+    You can think of nodes as places and edges as paths between them.
   </div>
 
-  <div class="step">
+  <div class="box">
     <b>What is graph traversal?</b><br><br>
-    Traversal means <b>visiting every node</b> in a graph in a controlled way.<br><br>
-    Computers need rules so they don’t get lost or keep visiting the same node forever.
+    Traversal means <b>visiting every node</b> in the graph in a sensible order.<br><br>
+    Computers need rules so they don’t get stuck or keep going in circles forever.
   </div>
 
-  <div class="step">
-    <b>Why do we track “visited” nodes?</b><br><br>
-    Some graphs have loops.<br>
-    If we don’t remember where we’ve been, the computer would go around forever.<br><br>
-    So we mark nodes as <b>visited</b>.
+  <div class="box">
+    <b>Why do we mark nodes as visited?</b><br><br>
+    Some graphs contain loops.<br>
+    If we don’t remember where we’ve been, the computer would never stop.<br><br>
+    Marking nodes as <b>visited</b> prevents infinite loops.
   </div>
 
-  <div class="step">
+  <div class="box">
     <b>Breadth-First Search (BFS)</b><br><br>
-    BFS looks at <b>all nearby nodes first</b> before going further away.<br><br>
-    It uses a <b>queue</b> so nodes are visited in the order they are discovered.<br><br>
-    This is why BFS can find the <b>shortest path</b>.
+    BFS visits <b>all nearby nodes first</b> before going deeper.<br><br>
+    It uses a <b>queue</b> (first in, first out).<br><br>
+    This means BFS can find the <b>shortest path</b>.
   </div>
 
-  <div class="step">
+  <div class="box">
     <b>Depth-First Search (DFS)</b><br><br>
-    DFS goes <b>as deep as possible</b> down one path before coming back.<br><br>
-    It uses a <b>stack</b> (or recursion).<br><br>
-    This is useful for exploring every possible route.
+    DFS goes <b>as far as possible down one path</b> before coming back.<br><br>
+    It uses a <b>stack</b> (last in, first out).<br><br>
+    This is useful for exploring all possible routes.
   </div>
 
-  <div id="liveExplanation" class="step">
-    Press BFS or DFS to see this explained step by step.
+  <div id="live" class="box">
+    Click BFS or DFS to see each step explained here.
   </div>
 </div>
 
@@ -163,7 +190,7 @@ function reset() {
 }
 
 function explain(text) {
-  document.getElementById("liveExplanation").innerHTML = text;
+  document.getElementById("live").innerHTML = text;
 }
 
 function visit(node, delay, text) {
@@ -180,8 +207,7 @@ function startBFS() {
   let time = 0;
 
   explain(
-    "<b>BFS starts.</b><br><br>" +
-    "We start at node A.<br>" +
+    "<b>BFS starts at node A.</b><br><br>" +
     "We will visit all nearby nodes before moving further away."
   );
 
@@ -192,8 +218,8 @@ function startBFS() {
       visit(
         node,
         time,
-        "We are visiting node <b>" + node + "</b>.<br><br>" +
-        "We mark it as visited so we don’t come back here again.<br><br>" +
+        "We are now visiting node <b>" + node + "</b>.<br><br>" +
+        "It is marked as visited so we don’t return here.<br><br>" +
         "Its neighbours are added to the <b>queue</b>."
       );
       time += 1200;
@@ -209,9 +235,8 @@ function startDFS() {
   let time = 0;
 
   explain(
-    "<b>DFS starts.</b><br><br>" +
-    "We start at node A.<br>" +
-    "We will go as deep as possible before coming back."
+    "<b>DFS starts at node A.</b><br><br>" +
+    "We will go as deep as possible before backtracking."
   );
 
   while (stack.length) {
@@ -221,7 +246,7 @@ function startDFS() {
       visit(
         node,
         time,
-        "We are visiting node <b>" + node + "</b>.<br><br>" +
+        "We are now visiting node <b>" + node + "</b>.<br><br>" +
         "DFS continues down this path before trying others.<br><br>" +
         "This uses a <b>stack</b>."
       );
