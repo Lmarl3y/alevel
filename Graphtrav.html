@@ -2,48 +2,61 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Graph Traversal Visualiser</title>
+<title>Graph Traversal Tutor</title>
 
 <style>
 body {
   margin: 0;
-  background: #0f1117;
-  color: #e6e6eb;
-  font-family: Arial, sans-serif;
+  background: #0b0f1a;
+  color: #e5e7eb;
+  font-family: system-ui, sans-serif;
+  display: flex;
+  height: 100vh;
+}
+
+#left {
+  width: 60%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+}
+
+#right {
+  width: 40%;
+  background: #020617;
+  padding: 20px;
+  border-left: 1px solid #1e293b;
+  display: flex;
+  flex-direction: column;
 }
 
 h1 {
-  margin: 20px;
-}
-
-#controls {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 button {
   background: #1f2937;
-  color: #fff;
-  border: 1px solid #374151;
+  color: white;
+  border: 1px solid #334155;
   padding: 10px 16px;
-  margin: 0 5px;
-  cursor: pointer;
+  margin: 6px;
   border-radius: 6px;
+  cursor: pointer;
 }
 
 button:hover {
-  background: #374151;
+  background: #334155;
 }
 
 svg {
   background: #020617;
   border-radius: 12px;
 }
+
 .node {
   fill: #1f2937;
-  stroke: #4b5563;
+  stroke: #475569;
   stroke-width: 2;
 }
 
@@ -55,46 +68,64 @@ svg {
   stroke: #334155;
   stroke-width: 2;
 }
+
+#explanation {
+  margin-top: 20px;
+  background: #020617;
+  border: 1px solid #1e293b;
+  border-radius: 8px;
+  padding: 14px;
+  line-height: 1.6;
+  flex-grow: 1;
+}
+
+.highlight {
+  color: #22c55e;
+}
 </style>
 </head>
 
 <body>
 
-<h1>Graph Traversal (BFS & DFS)</h1>
+<div id="left">
+  <h1>Graph Traversal Tutor</h1>
+  <div>
+    <button onclick="startBFS()">▶ Breadth-First Search</button>
+    <button onclick="startDFS()">▶ Depth-First Search</button>
+  </div>
 
-<div id="controls">
-  <button onclick="startBFS()">▶ BFS</button>
-  <button onclick="startDFS()">▶ DFS</button>
+  <svg width="480" height="300">
+    <line class="edge" x1="240" y1="40" x2="140" y2="140"/>
+    <line class="edge" x1="240" y1="40" x2="340" y2="140"/>
+    <line class="edge" x1="140" y1="140" x2="90" y2="240"/>
+    <line class="edge" x1="140" y1="140" x2="190" y2="240"/>
+    <line class="edge" x1="340" y1="140" x2="290" y2="240"/>
+    <line class="edge" x1="340" y1="140" x2="390" y2="240"/>
+
+    <circle id="A" class="node" cx="240" cy="40" r="20"/>
+    <circle id="B" class="node" cx="140" cy="140" r="20"/>
+    <circle id="C" class="node" cx="340" cy="140" r="20"/>
+    <circle id="D" class="node" cx="90" cy="240" r="20"/>
+    <circle id="E" class="node" cx="190" cy="240" r="20"/>
+    <circle id="F" class="node" cx="290" cy="240" r="20"/>
+    <circle id="G" class="node" cx="390" cy="240" r="20"/>
+  </svg>
 </div>
 
-<svg width="500" height="300">
-  <!-- Edges -->
-  <line class="edge" x1="250" y1="50" x2="150" y2="150"/>
-  <line class="edge" x1="250" y1="50" x2="350" y2="150"/>
-  <line class="edge" x1="150" y1="150" x2="100" y2="250"/>
-  <line class="edge" x1="150" y1="150" x2="200" y2="250"/>
-  <line class="edge" x1="350" y1="150" x2="300" y2="250"/>
-  <line class="edge" x1="350" y1="150" x2="400" y2="250"/>
-
-  <!-- Nodes -->
-  <circle id="A" class="node" cx="250" cy="50" r="20"/>
-  <circle id="B" class="node" cx="150" cy="150" r="20"/>
-  <circle id="C" class="node" cx="350" cy="150" r="20"/>
-  <circle id="D" class="node" cx="100" cy="250" r="20"/>
-  <circle id="E" class="node" cx="200" cy="250" r="20"/>
-  <circle id="F" class="node" cx="300" cy="250" r="20"/>
-  <circle id="G" class="node" cx="400" cy="250" r="20"/>
-</svg>
+<div id="right">
+  <h2>What’s happening?</h2>
+  <div id="explanation">
+    Click an algorithm to begin.<br><br>
+    This panel will explain <span class="highlight">every step</span> like a tutor.
+  </div>
+</div>
 
 <script>
 const graph = {
   A: ["B", "C"],
   B: ["D", "E"],
   C: ["F", "G"],
-  D: [],
-  E: [],
-  F: [],
-  G: []
+  D: [], E: [], F: [], G: []
 };
 
 function reset() {
@@ -103,9 +134,14 @@ function reset() {
   );
 }
 
-function visit(node, delay) {
+function explain(text) {
+  document.getElementById("explanation").innerHTML = text;
+}
+
+function visit(node, delay, text) {
   setTimeout(() => {
     document.getElementById(node).classList.add("visited");
+    explain(text);
   }, delay);
 }
 
@@ -115,12 +151,23 @@ function startBFS() {
   let visited = new Set();
   let time = 0;
 
+  explain(`
+    <b>Breadth-First Search starts.</b><br><br>
+    BFS explores <span class="highlight">level by level</span>.
+    We use a <b>queue</b> so the first node added is visited first.
+  `);
+
   while (queue.length) {
     let node = queue.shift();
     if (!visited.has(node)) {
       visited.add(node);
-      visit(node, time);
-      time += 600;
+      visit(node, time, `
+        Visiting node <b>${node}</b>.<br><br>
+        We mark it as <span class="highlight">visited</span>
+        so we don’t come back and loop forever.<br><br>
+        Its neighbours are added to the <b>queue</b>.
+      `);
+      time += 1200;
       graph[node].forEach(n => queue.push(n));
     }
   }
@@ -132,12 +179,23 @@ function startDFS() {
   let visited = new Set();
   let time = 0;
 
+  explain(`
+    <b>Depth-First Search starts.</b><br><br>
+    DFS explores <span class="highlight">as deep as possible</span>
+    before backtracking.<br><br>
+    It uses a <b>stack</b>.
+  `);
+
   while (stack.length) {
     let node = stack.pop();
     if (!visited.has(node)) {
       visited.add(node);
-      visit(node, time);
-      time += 600;
+      visit(node, time, `
+        Visiting node <b>${node}</b>.<br><br>
+        DFS goes deeper down this path before trying others.<br><br>
+        This is useful for <span class="highlight">exploring all possibilities</span>.
+      `);
+      time += 1200;
       graph[node].slice().reverse().forEach(n => stack.push(n));
     }
   }
