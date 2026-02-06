@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Depth First Search for Kids</title>
+  <style>
+    body {
+      font-family: "Comic Sans MS", "Arial", sans-serif;
+      background: #f0f8ff;
+      color: #333;
+      padding: 20px;
+      max-width: 800px;
+      margin: auto;
+    }
+
+    h1 {
+      text-align: center;
+      color: #2b6cb0;
+    }
+
+    .box {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      margin: 20px 0;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+    }
+
+    .step {
+      margin: 10px 0;
+      padding-left: 10px;
+      border-left: 5px solid #63b3ed;
+    }
+
+    .graph {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .node {
+      width: 50px;
+      height: 50px;
+      background: #68d391;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      margin: 10px;
+    }
+
+    .row {
+      display: flex;
+      justify-content: center;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 14px;
+      opacity: 0.7;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🌳 Depth-First Search (DFS)</h1>
+
+  <div class="box">
+    <h2>🤔 What is a graph?</h2>
+    <p>
+      A <strong>graph</strong> is like a bunch of dots that are connected by lines.
+      Each dot is a <strong>node</strong>, and the lines are <strong>paths</strong>.
+    </p>
+    <p>
+      Think of it like rooms connected by hallways 🏠➡️🏠
+    </p>
+  </div>
+
+  <div class="box">
+    <h2>👣 What does “Depth-First” mean?</h2>
+    <p>
+      Depth-First means:
+    </p>
+
+    <div class="step">➡️ Pick one path</div>
+    <div class="step">➡️ Keep going forward</div>
+    <div class="step">➡️ Don’t stop until you <strong>can’t go anymore</strong></div>
+    <div class="step">⬅️ Then go back and try a new path</div>
+
+    <p>
+      It’s like exploring a cave 🦇 — you walk until the end, then walk back.
+    </p>
+  </div>
+
+  <div class="box">
+    <h2>🧸 Example Graph</h2>
+    <p>
+      Let’s say we start at <strong>A</strong>.
+      DFS will go as deep as possible before coming back.
+    </p>
+
+    <div class="graph">
+      <div>
+        <div class="row">
+          <div class="node">A</div>
+        </div>
+        <div class="row">
+          <div class="node">B</div>
+          <div class="node">C</div>
+        </div>
+        <div class="row">
+          <div class="node">D</div>
+          <div class="node">E</div>
+        </div>
+      </div>
+    </div>
+
+    <p>
+      DFS might visit the nodes like this:
+    </p>
+    <p>
+      <strong>A → B → D → (back) → E → (back) → C</strong>
+    </p>
+  </div>
+
+  <div class="box">
+    <h2>📦 Why is DFS useful?</h2>
+    <ul>
+      <li>Finding hidden paths 🔍</li>
+      <li>Solving mazes 🧩</li>
+      <li>Checking if something is connected 🤝</li>
+    </ul>
+  </div>
+
+  <div class="footer">
+    Made to be friendly, simple, and fun 💙
+  </div>
+
+</body>
+</html>
