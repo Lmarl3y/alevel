@@ -1,142 +1,148 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Depth First Search for Kids</title>
-  <style>
-    body {
-      font-family: "Comic Sans MS", "Arial", sans-serif;
-      background: #f0f8ff;
-      color: #333;
-      padding: 20px;
-      max-width: 800px;
-      margin: auto;
-    }
+<meta charset="UTF-8">
+<title>Graph Traversal Visualiser</title>
 
-    h1 {
-      text-align: center;
-      color: #2b6cb0;
-    }
+<style>
+body {
+  margin: 0;
+  background: #0f1117;
+  color: #e6e6eb;
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-    .box {
-      background: white;
-      border-radius: 12px;
-      padding: 20px;
-      margin: 20px 0;
-      box-shadow: 0 5px 10px rgba(0,0,0,0.1);
-    }
+h1 {
+  margin: 20px;
+}
 
-    .step {
-      margin: 10px 0;
-      padding-left: 10px;
-      border-left: 5px solid #63b3ed;
-    }
+#controls {
+  margin-bottom: 20px;
+}
 
-    .graph {
-      display: flex;
-      justify-content: center;
-      margin-top: 20px;
-    }
+button {
+  background: #1f2937;
+  color: #fff;
+  border: 1px solid #374151;
+  padding: 10px 16px;
+  margin: 0 5px;
+  cursor: pointer;
+  border-radius: 6px;
+}
 
-    .node {
-      width: 50px;
-      height: 50px;
-      background: #68d391;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      margin: 10px;
-    }
+button:hover {
+  background: #374151;
+}
 
-    .row {
-      display: flex;
-      justify-content: center;
-    }
+svg {
+  background: #020617;
+  border-radius: 12px;
+}
+.node {
+  fill: #1f2937;
+  stroke: #4b5563;
+  stroke-width: 2;
+}
 
-    .footer {
-      text-align: center;
-      font-size: 14px;
-      opacity: 0.7;
-      margin-top: 30px;
-    }
-  </style>
+.node.visited {
+  fill: #22c55e;
+}
+
+.edge {
+  stroke: #334155;
+  stroke-width: 2;
+}
+</style>
 </head>
+
 <body>
 
-  <h1>🌳 Depth-First Search (DFS)</h1>
+<h1>Graph Traversal (BFS & DFS)</h1>
 
-  <div class="box">
-    <h2>🤔 What is a graph?</h2>
-    <p>
-      A <strong>graph</strong> is like a bunch of dots that are connected by lines.
-      Each dot is a <strong>node</strong>, and the lines are <strong>paths</strong>.
-    </p>
-    <p>
-      Think of it like rooms connected by hallways 🏠➡️🏠
-    </p>
-  </div>
+<div id="controls">
+  <button onclick="startBFS()">▶ BFS</button>
+  <button onclick="startDFS()">▶ DFS</button>
+</div>
 
-  <div class="box">
-    <h2>👣 What does “Depth-First” mean?</h2>
-    <p>
-      Depth-First means:
-    </p>
+<svg width="500" height="300">
+  <!-- Edges -->
+  <line class="edge" x1="250" y1="50" x2="150" y2="150"/>
+  <line class="edge" x1="250" y1="50" x2="350" y2="150"/>
+  <line class="edge" x1="150" y1="150" x2="100" y2="250"/>
+  <line class="edge" x1="150" y1="150" x2="200" y2="250"/>
+  <line class="edge" x1="350" y1="150" x2="300" y2="250"/>
+  <line class="edge" x1="350" y1="150" x2="400" y2="250"/>
 
-    <div class="step">➡️ Pick one path</div>
-    <div class="step">➡️ Keep going forward</div>
-    <div class="step">➡️ Don’t stop until you <strong>can’t go anymore</strong></div>
-    <div class="step">⬅️ Then go back and try a new path</div>
+  <!-- Nodes -->
+  <circle id="A" class="node" cx="250" cy="50" r="20"/>
+  <circle id="B" class="node" cx="150" cy="150" r="20"/>
+  <circle id="C" class="node" cx="350" cy="150" r="20"/>
+  <circle id="D" class="node" cx="100" cy="250" r="20"/>
+  <circle id="E" class="node" cx="200" cy="250" r="20"/>
+  <circle id="F" class="node" cx="300" cy="250" r="20"/>
+  <circle id="G" class="node" cx="400" cy="250" r="20"/>
+</svg>
 
-    <p>
-      It’s like exploring a cave 🦇 — you walk until the end, then walk back.
-    </p>
-  </div>
+<script>
+const graph = {
+  A: ["B", "C"],
+  B: ["D", "E"],
+  C: ["F", "G"],
+  D: [],
+  E: [],
+  F: [],
+  G: []
+};
 
-  <div class="box">
-    <h2>🧸 Example Graph</h2>
-    <p>
-      Let’s say we start at <strong>A</strong>.
-      DFS will go as deep as possible before coming back.
-    </p>
+function reset() {
+  document.querySelectorAll(".node").forEach(n =>
+    n.classList.remove("visited")
+  );
+}
 
-    <div class="graph">
-      <div>
-        <div class="row">
-          <div class="node">A</div>
-        </div>
-        <div class="row">
-          <div class="node">B</div>
-          <div class="node">C</div>
-        </div>
-        <div class="row">
-          <div class="node">D</div>
-          <div class="node">E</div>
-        </div>
-      </div>
-    </div>
+function visit(node, delay) {
+  setTimeout(() => {
+    document.getElementById(node).classList.add("visited");
+  }, delay);
+}
 
-    <p>
-      DFS might visit the nodes like this:
-    </p>
-    <p>
-      <strong>A → B → D → (back) → E → (back) → C</strong>
-    </p>
-  </div>
+function startBFS() {
+  reset();
+  let queue = ["A"];
+  let visited = new Set();
+  let time = 0;
 
-  <div class="box">
-    <h2>📦 Why is DFS useful?</h2>
-    <ul>
-      <li>Finding hidden paths 🔍</li>
-      <li>Solving mazes 🧩</li>
-      <li>Checking if something is connected 🤝</li>
-    </ul>
-  </div>
+  while (queue.length) {
+    let node = queue.shift();
+    if (!visited.has(node)) {
+      visited.add(node);
+      visit(node, time);
+      time += 600;
+      graph[node].forEach(n => queue.push(n));
+    }
+  }
+}
 
-  <div class="footer">
-    Made to be friendly, simple, and fun 💙
-  </div>
+function startDFS() {
+  reset();
+  let stack = ["A"];
+  let visited = new Set();
+  let time = 0;
+
+  while (stack.length) {
+    let node = stack.pop();
+    if (!visited.has(node)) {
+      visited.add(node);
+      visit(node, time);
+      time += 600;
+      graph[node].slice().reverse().forEach(n => stack.push(n));
+    }
+  }
+}
+</script>
 
 </body>
 </html>
