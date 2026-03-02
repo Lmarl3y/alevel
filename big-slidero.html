@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Big O Notation – With Slider 😈</title>
+
+<style>
+:root {
+    --bg: #0f1224;
+    --card: #1c1f3a;
+    --accent1: #ff6ec7;
+    --accent2: #6effc7;
+    --accent3: #6ea8ff;
+    --text: #ffffff;
+    --soft: #b8b8ff;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: "Comic Sans MS", "Poppins", sans-serif;
+}
+
+body {
+    margin: 0;
+    background: radial-gradient(circle at top, #1b1f4a, var(--bg));
+    color: var(--text);
+}
+
+header {
+    text-align: center;
+    padding: 50px 20px;
+}
+
+header h1 {
+    font-size: 3rem;
+    background: linear-gradient(90deg, var(--accent1), var(--accent2), var(--accent3));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+header p {
+    color: var(--soft);
+}
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 25px;
+}
+
+.card {
+    background: linear-gradient(145deg, #22265a, var(--card));
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    animation: popIn 0.8s ease forwards;
+}
+
+.card h2 {
+    margin-top: 0;
+    color: var(--accent2);
+}
+
+.example {
+    background: rgba(255,255,255,0.06);
+    padding: 12px;
+    border-radius: 12px;
+    margin: 10px 0;
+    border-left: 5px solid var(--accent1);
+}
+
+.slider-box {
+    margin-top: 20px;
+}
+
+input[type="range"] {
+    width: 100%;
+}
+
+.value {
+    text-align: center;
+    font-size: 1.2rem;
+    margin: 10px 0;
+}
+
+.work {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+}
+
+.block {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    background: var(--accent3);
+    animation: pop 0.3s ease;
+}
+
+.block.n2 {
+    background: var(--accent1);
+}
+
+.block.log {
+    background: var(--accent2);
+}
+
+.counter {
+    margin-top: 8px;
+    font-size: 0.9rem;
+    color: var(--soft);
+}
+
+footer {
+    text-align: center;
+    padding: 30px;
+    color: var(--soft);
+}
+
+@keyframes popIn {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes pop {
+    from { transform: scale(0); }
+    to { transform: scale(1); }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>Big O Notation</h1>
+    <p>Now with a slider so you can SEE the suffering</p>
+</header>
+
+<div class="container">
+
+    <!-- EXPLANATION -->
+    <div class="card">
+        <h2>Big O (Ultra Simple)</h2>
+        <p><strong>Big O means:</strong> How bad does this get when the number gets bigger?</p>
+
+        <div class="example">O(1) – Always the same</div>
+        <div class="example">O(n) – More stuff = more work</div>
+        <div class="example">O(n²) – Everything with everything 😭</div>
+        <div class="example">O(log n) – Cut it in half (big brain)</div>
+    </div>
+
+    <!-- SLIDER -->
+    <div class="card">
+        <h2>Move the Slider 👇</h2>
+
+        <div class="slider-box">
+            <input type="range" min="1" max="20" value="5" id="slider">
+            <div class="value">n = <span id="nValue">5</span></div>
+        </div>
+
+        <div class="example">
+            <strong>O(1)</strong>
+            <div class="work" id="o1"></div>
+            <div class="counter">Work: 1</div>
+        </div>
+
+        <div class="example">
+            <strong>O(n)</strong>
+            <div class="work" id="on"></div>
+            <div class="counter">Work: <span id="onCount"></span></div>
+        </div>
+
+        <div class="example">
+            <strong>O(n²)</strong>
+            <div class="work" id="on2"></div>
+            <div class="counter">Work: <span id="on2Count"></span></div>
+        </div>
+
+        <div class="example">
+            <strong>O(log n)</strong>
+            <div class="work" id="olog"></div>
+            <div class="counter">Work: <span id="ologCount"></span></div>
+        </div>
+    </div>
+
+</div>
+
+<footer>
+    Slide right = pain 📈
+</footer>
+
+<script>
+const slider = document.getElementById("slider");
+const nValue = document.getElementById("nValue");
+
+const o1 = document.getElementById("o1");
+const on = document.getElementById("on");
+const on2 = document.getElementById("on2");
+const olog = document.getElementById("olog");
+
+const onCount = document.getElementById("onCount");
+const on2Count = document.getElementById("on2Count");
+const ologCount = document.getElementById("ologCount");
+
+function block(className="") {
+    const b = document.createElement("div");
+    b.className = "block " + className;
+    return b;
+}
+
+function update(n) {
+    nValue.textContent = n;
+
+    o1.innerHTML = "";
+    on.innerHTML = "";
+    on2.innerHTML = "";
+    olog.innerHTML = "";
+
+    o1.appendChild(block());
+
+    for (let i = 0; i < n; i++) {
+        on.appendChild(block());
+    }
+
+    for (let i = 0; i < n*n; i++) {
+        on2.appendChild(block("n2"));
+        if (i > 200) break; // stop browser dying
+    }
+
+    let log = Math.floor(Math.log2(n));
+    for (let i = 0; i < log; i++) {
+        olog.appendChild(block("log"));
+    }
+
+    onCount.textContent = n;
+    on2Count.textContent = n * n + " (capped visually)";
+    ologCount.textContent = log;
+}
+
+slider.addEventListener("input", e => update(+e.target.value));
+
+update(slider.value);
+</script>
+
+</body>
+</html>
