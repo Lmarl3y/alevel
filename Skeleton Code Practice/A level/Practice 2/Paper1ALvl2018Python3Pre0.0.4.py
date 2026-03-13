@@ -60,7 +60,8 @@ def CreateTileDictionary():
       TileDictionary[chr(65 + Count)] = 5
 
   return TileDictionary
-    
+
+
 def DisplayTileValues(TileDictionary, AllowedWords):
   print()
   print("TILE VALUES")
@@ -68,7 +69,7 @@ def DisplayTileValues(TileDictionary, AllowedWords):
   for Letter, Points in TileDictionary.items():
     print("Points for " + Letter + ": " + str(Points))
   print()
-
+  CalculateFrequencies(AllowedWords)
 def GetStartingHand(TileQueue, StartHandSize):
   Hand = ""
   for Count in range(StartHandSize):
@@ -218,7 +219,18 @@ def HaveTurn(PlayerName, PlayerTiles, PlayerTilesPlayed, PlayerScore, TileDictio
       print("Your word was:", Choice)
       print("Your new score is:", PlayerScore)
       print("You have played", PlayerTilesPlayed, "tiles so far in this game.")
-  return PlayerTiles, PlayerTilesPlayed, PlayerScore, TileQueue  
+  return PlayerTiles, PlayerTilesPlayed, PlayerScore, TileQueue
+
+def CalculateFrequencies(AllowedWords):
+  Frequencies = dict()
+  for i in range(26):
+    Frequencies[chr(65 + i)] = 0
+  for i in range(len(AllowedWords)):
+    for Letter in AllowedWords[i]:
+      Frequencies[Letter] += 1
+    print('\nLetter Frequencies\n')
+  for Letter, Frequency in Frequencies.items():
+    print(f"Frequency of {Letter}: {Frequency}")
 
 def DisplayWinner(PlayerOneScore, PlayerTwoScore):
   print()

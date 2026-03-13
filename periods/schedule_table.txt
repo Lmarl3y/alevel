@@ -1,0 +1,23 @@
+SCHEDULE COMPARISON TABLE
+
+
+Week A
+======================================================================================================================================================
+Day          | My Schedule                              | Their Schedule                           | My Study                  | Shared Free         
+------------------------------------------------------------------------------------------------------------------------------------------------------
+Monday       | P1:Comp P2:Free P3:Free P4:Free P5:Psyc  | P1:Free P2:Free P3:Crim P4:Soci P5:Free  | P1, P5                    | P2                  
+Tuesday      | P1:Free P2:Crim P3:Psyc P4:Free P5:Comp  | P1:H&SC P2:Free P3:Free P4:Crim P5:Soci  | P2, P3, P5                | None                
+Wednesday    | P1:Crim P2:Free P3:Free P4:Encr P5:Encr  | P1:Free P2:Free P3:H&SC P4:Encr P5:Encr  | P1, P4, P5                | P2                  
+Thursday     | P1:Free P2:Free P3:Crim P4:Psyc P5:Crim  | P1:Crim P2:Soci P3:H&SC P4:Free P5:Soci  | P3, P4, P5                | None                
+Friday       | P1:Comp P2:Free P3:Free P4:Crim P5:Psyc  | P1:Free P2:Crim P3:Free P4:Free P5:H&SC  | P1, P4, P5                | P3                  
+
+
+Week B
+======================================================================================================================================================
+Day          | My Schedule                              | Their Schedule                           | My Study                  | Shared Free         
+------------------------------------------------------------------------------------------------------------------------------------------------------
+Monday       | P1:Free P2:Comp P3:Free P4:Psyc P5:Free  | P1:Free P2:Free P3:Free P4:Free P5:Crim  | P2, P4                    | P1, P3              
+Tuesday      | P1:Psyc P2:Free P3:Crim P4:Free P5:Comp  | P1:H&SC P2:Crim P3:Free P4:Soci P5:Free  | P1, P3, P5                | None                
+Wednesday    | P1:Free P2:Psyc P3:Crim P4:Encr P5:Encr  | P1:Free P2:H&SC P3:Free P4:Encr P5:Encr  | P2, P3, P4, P5            | P1                  
+Thursday     | P1:Comp P2:Crim P3:Free P4:Free P5:Free  | P1:Soci P2:Free P3:Crim P4:Soci P5:H&SC  | P1, P2                    | None                
+Friday       | P1:Psyc P2:Crim P3:Comp P4:Free P5:Free  | P1:Free P2:H&SC P3:Crim P4:Free P5:Soci  | P1, P2, P3                | P4                  

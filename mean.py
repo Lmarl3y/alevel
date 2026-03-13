@@ -9,4 +9,3 @@ def mean():
     print(mean)
         
 mean()
-        

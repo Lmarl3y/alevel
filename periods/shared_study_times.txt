@@ -1,0 +1,51 @@
+SHARED STUDY PERIODS
+====================
+
+WEEK A
+------
+
+Monday:
+  My lessons:     P1: Computing, P5: Psychology
+  Their lessons:  P3: Criminology, P4: Sociology
+  Shared free:    P2
+
+Tuesday:
+  No shared free periods
+
+Wednesday:
+  My lessons:     P1: Criminology, P4: Enrichment, P5: Enrichment
+  Their lessons:  P3: H&SC, P4: Enrichment, P5: Enrichment
+  Shared free:    P2
+
+Thursday:
+  No shared free periods
+
+Friday:
+  My lessons:     P1: Computing, P4: Criminology, P5: Psychology
+  Their lessons:  P2: Criminology, P5: H&SC
+  Shared free:    P3
+
+
+WEEK B
+------
+
+Monday:
+  My lessons:     P2: Computing, P4: Psychology
+  Their lessons:  P5: Criminology
+  Shared free:    P1, P3
+
+Tuesday:
+  No shared free periods
+
+Wednesday:
+  My lessons:     P2: Psychology, P3: Criminology, P4: Enrichment, P5: Enrichment
+  Their lessons:  P2: H&SC, P4: Enrichment, P5: Enrichment
+  Shared free:    P1
+
+Thursday:
+  No shared free periods
+
+Friday:
+  My lessons:     P1: Psychology, P2: Criminology, P3: Computing
+  Their lessons:  P2: H&SC, P3: Criminology, P5: Sociology
+  Shared free:    P4
