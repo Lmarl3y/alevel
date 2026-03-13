@@ -1,219 +1,93 @@
+import bcrypt
 import sqlite3
 import random
 
-# ---------------- DATABASE SETUP ----------------
 
-conn = sqlite3.connect("tictactoe.db")
-cursor = conn.cursor()
-
-cursor.execute("""
-CREATE TABLE IF NOT EXISTS players(
-    username TEXT PRIMARY KEY,
-    password TEXT
-)
-""")
-
-cursor.execute("""
-CREATE TABLE IF NOT EXISTS scores(
-    player_name TEXT,
-    score INTEGER
-)
-""")
-
+# Database setup (sqlite)
+conn = sqlite3.connect('ttt.db')
+c = conn.cursor()
+# Table for user creation//logging in
+c.execute('''CREATE TABLE IF NOT EXISTS users
+             (username TEXT PRIMARY KEY, password TEXT)''')
+# Table for scores
+c.execute('''CREATE TABLE IF NOT EXISTS scores
+                (username TEXT PRIMARY KEY, wins INTEGER, losses INTEGER, draws INTEGER)''')
 conn.commit()
 
-# ---------------- AUTHENTICATION ----------------
-
-def login_player(player_num):
-
-    print(f"\nPlayer {player_num} Login")
-
-    username = input("Username: ")
-    password = input("Password: ")
-
-    cursor.execute("SELECT * FROM players WHERE username=? AND password=?",
-                   (username, password))
-
-    result = cursor.fetchone()
-
-    if result:
-        print("Login successful")
-        return username
-    else:
-        print("User not found. Creating new account.")
-        cursor.execute("INSERT INTO players VALUES (?,?)", (username, password))
+def register():
+    username = input("Enter a username: ")
+    password = input("Enter a password: ")
+    hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()) # Encrypts password with bcrypt
+    
+    try:
+        c.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username, hashed_password)) # Sets up username and encrypted password into db
+        c.execute("INSERT INTO scores (username, wins, losses, draws) VALUES (?, 0, 0, 0)", (username,)) # Sets up initial scores for user, starting at 0
         conn.commit()
+        print("Registration successful")
+    except sqlite3.IntegrityError:
+        print("Username already exists. Please choose a different username.") # Username exists
+
+def login():
+    username = input("Enter your username: ")
+    password = input("Enter your password: ")
+    c.execute("SELECT password FROM users WHERE username = ?", (username,))
+    result = c.fetchone()
+    if result and bcrypt.checkpw(password.encode('utf-8'), result[0]): # Checks if password matches encryption & is in line with username
+        print("Login Successful")
         return username
-
-
-# ---------------- BOARD ----------------
-
-board = [[" " for x in range(3)] for y in range(3)]
-
-
-def display_board():
-    print("\n")
-    for row in board:
-        print(row[0] + " | " + row[1] + " | " + row[2])
-        print("--+---+--")
-    print("\n")
-
-
-# ---------------- MOVE FUNCTIONS ----------------
-
-def player_move(symbol):
-
-    while True:
-
-        try:
-            row = int(input("Row (0-2): "))
-            col = int(input("Col (0-2): "))
-
-            if row not in [0,1,2] or col not in [0,1,2]:
-                print("Invalid position")
-                continue
-
-            if board[row][col] != " ":
-                print("Space already taken")
-                continue
-
-            board[row][col] = symbol
-            break
-
-        except:
-            print("Invalid input")
-
-
-def computer_move():
-
-    empty = []
-
-    for r in range(3):
-        for c in range(3):
-            if board[r][c] == " ":
-                empty.append((r,c))
-
-    move = random.choice(empty)
-    board[move[0]][move[1]] = "O"
-
-    print("Computer placed O")
-
-
-# ---------------- WIN CHECK ----------------
-
-def check_winner(symbol):
-
-    # rows
-    for row in board:
-        if row.count(symbol) == 3:
-            return True
-
-    # columns
-    for col in range(3):
-        if board[0][col] == symbol and board[1][col] == symbol and board[2][col] == symbol:
-            return True
-
-    # diagonals
-    if board[0][0] == symbol and board[1][1] == symbol and board[2][2] == symbol:
-        return True
-
-    if board[0][2] == symbol and board[1][1] == symbol and board[2][0] == symbol:
-        return True
-
-    return False
-
-
-# ---------------- DRAW CHECK ----------------
-
-def check_draw():
-
-    for row in board:
-        if " " in row:
-            return False
-
-    return True
-
-
-# ---------------- SAVE SCORE ----------------
-
-def save_score(player):
-
-    cursor.execute(
-        "INSERT INTO scores VALUES (?,1)",
-        (player,)
-    )
-
-    conn.commit()
-
-
-# ---------------- SHOW TOP 5 ----------------
-
-def show_top_scores():
-
-    print("\nTop 5 Scores\n")
-
-    cursor.execute("""
-    SELECT player_name, SUM(score) as total
-    FROM scores
-    GROUP BY player_name
-    ORDER BY total DESC
-    LIMIT 5
-    """)
-
-    results = cursor.fetchall()
-
-    for r in results:
-        print(r[0], "-", r[1])
-
-
-# ---------------- GAME ----------------
-
-print("TIC TAC TOE\n")
-
-player1 = login_player(1)
-
-mode = input("Play vs computer? (y/n): ")
-
-if mode.lower() == "y":
-    player2 = "Computer"
-else:
-    player2 = login_player(2)
-
-display_board()
-
-while True:
-
-    print(player1 + "'s turn (X)")
-    player_move("X")
-    display_board()
-
-    if check_winner("X"):
-        print(player1, "wins!")
-        save_score(player1)
-        break
-
-    if check_draw():
-        print("Game Draw")
-        break
-
-    if player2 == "Computer":
-        computer_move()
     else:
-        print(player2 + "'s turn (O)")
-        player_move("O")
+        print("Username or password is doesn't match database. Try again.")
+        return None
+    
+def player_auth():
+    # Register or login menu, returns username on success or None
+    print("1. Register")
+    print("2. Login")
+    choice = input("Enter your choice: ")
+    while choice not in ['1', '2']:
+        choice = input(f"{choice} isn't a valid option. Try again: ")
+    if choice == '1':
+        register()
+        return login()  # log in after registering
+    elif choice == '2':
+        return login()
 
-    display_board()
+def menu():
+    # Standard menu
+    print("1. Register")
+    print("2. Login")
+    print("3. Exit")
+    menuchoice = input("Enter your choice: ") # gets user to enter 1-3
+    while menuchoice not in ['1','2','3']:
+        menuchoice = input(f"{menuchoice} isn't a valid option. Try again: ")
+    if menuchoice == '1':
+        register() # runs register function
+    elif menuchoice == '2':
+        username = login() # runs login function
+        if username:
+            pregame(username)
+    elif menuchoice == '3':
+        print("Exiting") # exits program, ending there.
+        return
 
-    if check_winner("O"):
-        print(player2, "wins!")
-        save_score(player2)
-        break
+def pregame(player1):
+    print("1. PVC") # PLay vs Computer
+    print("2. PVP") # Play vs Player
+    gamemode = input("Enter a choice:")
+    while gamemode not in ['1', '2']:
+        gamemode = input(f"{gamemode} isn't a valid option. Try again: ")
+    if gamemode == '1':
+        print("Starting PVC")
+        pvc(player1)
+    elif gamemode == '2':
+        print(f"Player 1: {player1}")
+        print("Player 2 - please register or login:")
+        player2 = player_auth()
+        if player2:
+            print(f"Player 2: {player2}")
+            pvp(player1, player2)
+        else:
+            print("Player 2 login failed.")
 
-    if check_draw():
-        print("Game Draw")
-        break
+menu()
 
-
-show_top_scores()
-
-conn.close()
